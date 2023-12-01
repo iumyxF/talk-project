@@ -16,6 +16,8 @@ spring:
     multipart:
       # 大小限制
       max-file-size: 10MB
+upload:
+  filePath: F:\\temp\\upload\\
 server:
   address: 0.0.0.0
   port: 8102

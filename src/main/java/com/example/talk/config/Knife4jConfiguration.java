@@ -33,7 +33,7 @@ public class Knife4jConfiguration {
                 .groupName("all api")
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("com.example.talk.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.example.talk"))
                 .paths(PathSelectors.any())
                 .build();
     }
