@@ -15,7 +15,6 @@ import io.reactivex.Flowable;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
@@ -33,7 +32,7 @@ public class TyqwApiTest {
      */
     @Ignore
     @Test
-    public void testCallWithMessage() throws Exception {
+    public void testCallWithMessage() {
         try {
             callWithMessage();
         } catch (ApiException | NoApiKeyException | InputRequiredException e) {
@@ -73,7 +72,7 @@ public class TyqwApiTest {
      */
     @Ignore
     @Test
-    public void testMultiwheelCallWithMessage() throws Exception {
+    public void testMultiwheelCallWithMessage() {
         try {
             multiwheelCallWithMessage();
         } catch (ApiException | NoApiKeyException | InputRequiredException e) {
@@ -118,7 +117,7 @@ public class TyqwApiTest {
      */
     @Ignore
     @Test
-    public void testMultiwheelStreamCallWithMessage() throws Exception {
+    public void testMultiwheelStreamCallWithMessage() {
         try {
             streamCallWithMessage();
         } catch (ApiException | NoApiKeyException | InputRequiredException e) {

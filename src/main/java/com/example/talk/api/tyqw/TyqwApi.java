@@ -30,7 +30,7 @@ public class TyqwApi {
     /**
      * 保存不同用户的聊天上下文
      */
-    private HashMap<Long, MessageManager> userMessageManagerMap = new HashMap<>(16);
+    private final HashMap<Long, MessageManager> userMessageManagerMap = new HashMap<>(16);
 
     /**
      * 现阶段回答方式：服务器等待全部结果响应完毕再返回

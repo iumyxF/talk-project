@@ -31,8 +31,8 @@ public class SseControllerTest {
         SseEmitter emitter = new SseEmitter();
         executor.execute(() -> {
             try {
-                for (int i = 0; i < WORDS.length; i++) {
-                    emitter.send(WORDS[i]);
+                for (String word : WORDS) {
+                    emitter.send(word);
                     TimeUnit.SECONDS.sleep(1);
                 }
                 emitter.complete();
