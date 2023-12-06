@@ -98,4 +98,14 @@ public class TyqwApi {
             throw new BusinessException(ErrorCode.REMOTE_CALL_ERROR);
         }
     }
+
+    /**
+     * 删除用户的聊天记录
+     *
+     * @param userId 用户id
+     * @return 结果
+     */
+    public boolean clearMessage(Long userId) {
+        return userMessageManagerMap.remove(userId) != null;
+    }
 }

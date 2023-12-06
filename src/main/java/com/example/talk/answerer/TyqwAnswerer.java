@@ -51,6 +51,11 @@ public class TyqwAnswerer implements Answerer {
     }
 
     @Override
+    public boolean resetTalk(User user) {
+        return api.clearMessage(user.getId());
+    }
+
+    @Override
     public String getName() {
         return AnswererEnums.TYQW.getName();
     }

@@ -4,14 +4,14 @@ import com.example.talk.annotation.AuthCheck;
 import com.example.talk.common.BaseResponse;
 import com.example.talk.common.ResultUtils;
 import com.example.talk.constant.UserConstant;
-import com.example.talk.model.dto.talk.TalkRequest;
+import com.example.talk.model.domain.User;
+import com.example.talk.model.dto.talk.TalkQuestionRequest;
+import com.example.talk.model.dto.talk.TalkRestRequest;
 import com.example.talk.model.enums.AnswererEnums;
 import com.example.talk.service.TalkService;
+import com.example.talk.service.UserService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,23 +23,36 @@ import java.util.List;
  * @date 2023/12/4 11:11
  */
 @RestController
+@RequestMapping("/talk")
 public class TalkController {
 
     @Resource
     private TalkService talkService;
+    @Resource
+    private UserService userService;
 
     @ApiOperation(value = "LLM 模型列表")
-    @GetMapping("/talk/answerer/list")
-    public BaseResponse<List<String>> getAllAnswerer() {
+    @GetMapping("/models")
+    public BaseResponse<List<String>> models() {
         return ResultUtils.success(AnswererEnums.getAllNames());
     }
 
     @ApiOperation(value = "问答")
     @AuthCheck(anyRole = {UserConstant.DEFAULT_ROLE, UserConstant.ADMIN_ROLE})
-    @PostMapping("/talk")
-    public BaseResponse<String> talk(@RequestBody TalkRequest talkRequest,
-                                     HttpServletRequest httpServletRequest) {
-        String reply = talkService.talk(talkRequest, httpServletRequest);
+    @PostMapping("/answerer")
+    public BaseResponse<String> answerer(@RequestBody TalkQuestionRequest talkQuestionRequest,
+                                         HttpServletRequest httpServletRequest) {
+        User loginUser = userService.getLoginUser(httpServletRequest);
+        String reply = talkService.talk(talkQuestionRequest, loginUser);
         return ResultUtils.success(reply);
+    }
+
+    @ApiOperation(value = "重置对话")
+    @AuthCheck(anyRole = {UserConstant.DEFAULT_ROLE, UserConstant.ADMIN_ROLE})
+    @PostMapping("/reset")
+    public BaseResponse<Boolean> reset(@RequestBody TalkRestRequest talkRestRequest,
+                                       HttpServletRequest httpServletRequest) {
+        User loginUser = userService.getLoginUser(httpServletRequest);
+        return ResultUtils.success(talkService.reset(talkRestRequest, loginUser));
     }
 }
