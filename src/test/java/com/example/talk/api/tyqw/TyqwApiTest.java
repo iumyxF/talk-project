@@ -59,12 +59,12 @@ public class TyqwApiTest {
         GenerationResult result = gen.call(param);
         System.out.println(JsonUtils.toJson(result));
         //第二轮问答
-        //msgManager.add(result);
-        //param.setPrompt("找个近点的");
-        //param.setMessages(msgManager.get());
-        //result = gen.call(param);
-        //System.out.println(result);
-        //System.out.println(JsonUtils.toJson(result));
+        msgManager.add(result);
+        param.setPrompt("找个近点的");
+        param.setMessages(msgManager.get());
+        result = gen.call(param);
+        System.out.println(result);
+        System.out.println(JsonUtils.toJson(result));
     }
 
     /**
@@ -84,30 +84,54 @@ public class TyqwApiTest {
     private void multiwheelCallWithMessage() throws NoApiKeyException, InputRequiredException {
         Generation gen = new Generation();
         MessageManager msgManager = new MessageManager(10);
-        Message systemMsg =
-                Message.builder().role(Role.SYSTEM.getValue()).content("你是智能助手机器人").build();
-        Message userMsg = Message.builder().role(Role.USER.getValue()).content("今天星期几？").build();
+        //sys
+        Message systemMsg = Message.builder().role(Role.SYSTEM.getValue()).content("你是智能助手机器人").build();
         msgManager.add(systemMsg);
+
+        //user
+        Message userMsg = Message.builder().role(Role.USER.getValue()).content("编写一个java Main 方法").build();
         msgManager.add(userMsg);
-        QwenParam param =
-                QwenParam.builder()
-                        .model(Generation.Models.QWEN_MAX)
-                        .apiKey(apiKey)
-                        .messages(msgManager.get())
-                        .resultFormat(QwenParam.ResultFormat.MESSAGE)
-                        .topP(0.8)
-                        .enableSearch(true)
-                        .build();
+        QwenParam param = QwenParam.builder()
+                .model(Generation.Models.QWEN_MAX)
+                .apiKey(apiKey)
+                .messages(msgManager.get())
+                .resultFormat(QwenParam.ResultFormat.MESSAGE)
+                .topP(0.8)
+                .enableSearch(true)
+                .build();
         GenerationResult result = gen.call(param);
-        System.out.println(result);
-        //保存第一轮结果
-        msgManager.add(result);
         System.out.println(JsonUtils.toJson(result));
+        //sys
+        msgManager.add(result);
+
         // 第二轮
-        param.setPrompt("不放糖可以吗？");
-        param.setMessages(msgManager.get());
-        result = gen.call(param);
-        System.out.println(result);
+        gen = new Generation();
+        QwenParam param2 = QwenParam.builder()
+                .model(Generation.Models.QWEN_MAX)
+                .apiKey(apiKey)
+                .messages(msgManager.get())
+                .resultFormat(QwenParam.ResultFormat.MESSAGE)
+                .topP(0.8)
+                .enableSearch(true)
+                .build();
+        param2.setPrompt("在上面的代码的基础上，添加代码输出一个ABC字符串");
+        result = gen.call(param2);
+        System.out.println(JsonUtils.toJson(result));
+
+        //第三轮
+        //sys
+        msgManager.add(result);
+
+        QwenParam param3 = QwenParam.builder()
+                .model(Generation.Models.QWEN_MAX)
+                .apiKey(apiKey)
+                .messages(msgManager.get())
+                .resultFormat(QwenParam.ResultFormat.MESSAGE)
+                .topP(0.8)
+                .enableSearch(true)
+                .build();
+        param3.setPrompt("在上面的代码的基础上，添加代码输出一个'你好'的字符串");
+        result = gen.call(param3);
         System.out.println(JsonUtils.toJson(result));
     }
 

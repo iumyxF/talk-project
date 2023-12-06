@@ -8,11 +8,13 @@ import com.alibaba.dashscope.common.MessageManager;
 import com.alibaba.dashscope.common.Role;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.example.talk.common.ErrorCode;
+import com.example.talk.exception.BusinessException;
 import com.example.talk.model.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
@@ -22,7 +24,7 @@ import java.util.HashMap;
  * @date 2023/12/2 14:45
  */
 @Slf4j
-@Service
+@Component
 public class TyqwApi {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -43,40 +45,57 @@ public class TyqwApi {
      */
     public GenerationResult callWithMessage(User user, String question, String apiKey) {
         try {
-            MessageManager msgManager = getMessageManager(user);
             Generation gen = new Generation();
-            Message userMsg = Message.builder()
-                    .role(Role.USER.getValue())
-                    .content(question)
-                    .build();
-            msgManager.add(userMsg);
-            QwenParam param = QwenParam.builder()
-                    .apiKey(apiKey)
-                    .model(Generation.Models.QWEN_MAX)
-                    .messages(msgManager.get())
-                    .resultFormat(QwenParam.ResultFormat.MESSAGE)
-                    .topP(0.8)
-                    .enableSearch(true)
-                    .build();
-            GenerationResult result = gen.call(param);
-            log.info("通义千问 响应结果:{}", OBJECT_MAPPER.writeValueAsString(result));
+            QwenParam param;
+            GenerationResult result;
+            MessageManager msgManager = userMessageManagerMap.get(user.getId());
+            //首次访问
+            if (null == msgManager) {
+                //初始化LLM
+                msgManager = new MessageManager(30);
+                Message systemMsg = Message.builder()
+                        .role(Role.SYSTEM.getValue())
+                        .content("You are a helpful assistant.")
+                        .build();
+                msgManager.add(systemMsg);
+                //首次提问
+                Message userMsg = Message
+                        .builder()
+                        .role(Role.USER.getValue())
+                        .content(question)
+                        .build();
+                msgManager.add(userMsg);
+                param = QwenParam.builder()
+                        .model(Generation.Models.QWEN_MAX)
+                        .apiKey(apiKey)
+                        .messages(msgManager.get())
+                        .resultFormat(QwenParam.ResultFormat.MESSAGE)
+                        .topP(0.8)
+                        .enableSearch(true)
+                        .build();
+                result = gen.call(param);
+                log.info("通义千问 响应结果:{}", OBJECT_MAPPER.writeValueAsString(result));
+                msgManager.add(result);
+                userMessageManagerMap.put(user.getId(), msgManager);
+            } else {
+                //非首次提问
+                param = QwenParam.builder()
+                        .model(Generation.Models.QWEN_MAX)
+                        .apiKey(apiKey)
+                        .messages(msgManager.get())
+                        .resultFormat(QwenParam.ResultFormat.MESSAGE)
+                        .topP(0.8)
+                        .enableSearch(true)
+                        .build();
+                param.setPrompt(question);
+                result = gen.call(param);
+                msgManager.add(result);
+                log.info("通义千问 响应结果:{}", OBJECT_MAPPER.writeValueAsString(result));
+            }
             return result;
         } catch (NoApiKeyException | InputRequiredException | JsonProcessingException e) {
-            throw new RuntimeException(e);
+            log.error("通义千问 访问异常,{}", e.getMessage());
+            throw new BusinessException(ErrorCode.REMOTE_CALL_ERROR);
         }
-    }
-
-    public MessageManager getMessageManager(User user) {
-        MessageManager manager = userMessageManagerMap.get(user.getId());
-        if (null == manager) {
-            manager = new MessageManager(10);
-            //先催眠LLM 告诉他，他是世界第一LLM
-            Message systemMsg = Message.builder()
-                    .role(Role.SYSTEM.getValue())
-                    .content("You are a helpful assistant.")
-                    .build();
-            manager.add(systemMsg);
-        }
-        return manager;
     }
 }
