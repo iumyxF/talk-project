@@ -18,7 +18,7 @@ public class UserAddRequest implements Serializable {
     /**
      * 用户昵称
      */
-    private String userName;
+    private String username;
 
     /**
      * 账号
@@ -48,7 +48,7 @@ public class UserAddRequest implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public void check() {
-        if (StringUtils.isBlank(userName)) {
+        if (StringUtils.isBlank(username)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         if (StringUtils.isBlank(account)) {

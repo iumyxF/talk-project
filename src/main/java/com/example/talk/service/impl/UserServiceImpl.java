@@ -1,5 +1,6 @@
 package com.example.talk.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.talk.common.ErrorCode;
@@ -63,6 +64,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             String encryptPassword = DigestUtils.md5DigestAsHex((SALT + password).getBytes());
             // 3. 插入数据
             User user = new User();
+            user.setUsername("user_" + IdUtil.fastSimpleUUID());
             user.setAccount(account);
             user.setPassword(encryptPassword);
             boolean saveResult = this.save(user);
