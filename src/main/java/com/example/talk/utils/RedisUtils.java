@@ -16,6 +16,8 @@ import java.util.stream.Stream;
 
 /**
  * redis 工具类
+ *
+ * @author none
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings(value = {"unchecked", "rawtypes"})
@@ -200,9 +202,7 @@ public class RedisUtils {
      */
     public static void deleteObject(final Collection collection) {
         RBatch batch = CLIENT.createBatch();
-        collection.forEach(t -> {
-            batch.getBucket(t.toString()).deleteAsync();
-        });
+        collection.forEach(t -> batch.getBucket(t.toString()).deleteAsync());
         batch.execute();
     }
 

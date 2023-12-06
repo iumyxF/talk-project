@@ -41,7 +41,7 @@ public class RateLimiterInterceptor {
         key.append(ServletUtils.getRequest().getRequestURI());
         if (LimitType.IP.equals(rateLimiter.limitType())) {
             // 获取请求ip
-            key.append(":").append(ServletUtils.getClientIP());
+            key.append(":").append(ServletUtils.getClientIp());
         }
         return key.toString();
     }

@@ -28,6 +28,8 @@ import java.util.Map;
 
 /**
  * 客户端工具类
+ *
+ * @author none
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ServletUtils extends ServletUtil {
@@ -92,7 +94,7 @@ public class ServletUtils extends ServletUtil {
      * @return Map
      */
     public static Map<String, String> getParamMap(ServletRequest request) {
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>(16);
         for (Map.Entry<String, String[]> entry : getParams(request).entrySet()) {
             params.put(entry.getKey(), StringUtils.join(entry.getValue(), CharPool.COMMA));
         }
@@ -142,33 +144,7 @@ public class ServletUtils extends ServletUtil {
         }
     }
 
-    /**
-     * 是否是Ajax异步请求
-     *
-     * @param request
-     */
-    public static boolean isAjaxRequest(HttpServletRequest request) {
-
-        String accept = request.getHeader("accept");
-        if (accept != null && accept.contains(MediaType.APPLICATION_JSON_VALUE)) {
-            return true;
-        }
-
-        String xRequestedWith = request.getHeader("X-Requested-With");
-        if (xRequestedWith != null && xRequestedWith.contains("XMLHttpRequest")) {
-            return true;
-        }
-
-        String uri = request.getRequestURI();
-        if (StringUtils.equalsAnyIgnoreCase(uri, ".json", ".xml")) {
-            return true;
-        }
-
-        String ajax = request.getParameter("__ajax");
-        return StringUtils.equalsAnyIgnoreCase(ajax, "json", "xml");
-    }
-
-    public static String getClientIP() {
+    public static String getClientIp() {
         return getClientIP(getRequest());
     }
 

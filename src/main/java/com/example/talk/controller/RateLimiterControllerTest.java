@@ -1,6 +1,8 @@
 package com.example.talk.controller;
 
 import com.example.talk.annotation.RateLimiter;
+import com.example.talk.common.BaseResponse;
+import com.example.talk.common.ResultUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,13 +18,13 @@ public class RateLimiterControllerTest {
 
     @RateLimiter(count = 2, time = 10)
     @GetMapping("/rate/test1")
-    public String test1() {
-        return "ok";
+    public BaseResponse<String> test1() {
+        return ResultUtils.success("ok");
     }
 
     @RateLimiter(count = 5, time = 10)
     @GetMapping("/rate/test2")
-    public String test2() {
-        return "ok";
+    public BaseResponse<String> test2() {
+        return ResultUtils.success("ok");
     }
 }
