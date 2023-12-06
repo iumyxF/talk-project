@@ -5,7 +5,7 @@ import com.example.talk.model.dto.talk.TalkRequest;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author fzy
+ * @author iumyxF
  * @description: talk
  * @date 2023/12/5 14:28
  */

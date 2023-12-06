@@ -1,5 +1,6 @@
 package com.example.talk.common;
 
+import com.example.talk.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,7 +44,7 @@ public class ImageUpload {
         if (!dir.exists()) {
             boolean mkdir = dir.mkdir();
             if (!mkdir) {
-                return ResultUtils.error(ErrorCode.OPERATION_ERROR);
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR);
             }
         }
         try {
