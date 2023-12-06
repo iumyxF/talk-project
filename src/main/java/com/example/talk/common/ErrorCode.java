@@ -43,7 +43,13 @@ public enum ErrorCode {
     /**
      * Remote call error code.
      */
-    REMOTE_CALL_ERROR(50002, "远程接口调用失败");
+    REMOTE_CALL_ERROR(50002, "远程接口调用失败"),
+
+    /**
+     * Request frequently error code.
+     */
+    REQUEST_FREQUENTLY_ERROR(50003, "请求过于频繁");
+
     /**
      * 状态码
      */
