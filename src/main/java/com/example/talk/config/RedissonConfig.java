@@ -42,7 +42,7 @@ public class RedissonConfig {
                 config.useSingleServer()
                         //设置redis key前缀
                         .setNameMapper(new NameMapper() {
-                            String keyPrefix = redissonProperties.getKeyPrefix();
+                            final String keyPrefix = redissonProperties.getKeyPrefix();
 
                             @Override
                             public String map(String name) {

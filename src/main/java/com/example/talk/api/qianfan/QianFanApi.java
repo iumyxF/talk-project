@@ -38,7 +38,7 @@ public class QianFanApi {
 
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final static HashMap<Long, MessageContext> msgContextMap = new HashMap<>();
+    private final static HashMap<Long, MessageContext> MSG_CONTEXT_MAP = new HashMap<>();
 
     /**
      * 提问
@@ -51,7 +51,7 @@ public class QianFanApi {
      */
     public QianFanQuestionResponse callWithMessage(User user, String question, String apiKey, String secretKey) {
         Token token = getAccessToken(apiKey, secretKey);
-        MessageContext context = msgContextMap.get(user.getId());
+        MessageContext context = MSG_CONTEXT_MAP.get(user.getId());
         if (null == context) {
             context = new MessageContext();
         }
@@ -70,7 +70,7 @@ public class QianFanApi {
             QianFanQuestionResponse response = OBJECT_MAPPER.readValue(respJson, QianFanQuestionResponse.class);
             handleError(response);
             context.addMessage(response);
-            msgContextMap.put(user.getId(), context);
+            MSG_CONTEXT_MAP.put(user.getId(), context);
             return response;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
