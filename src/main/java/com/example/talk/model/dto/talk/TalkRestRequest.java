@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @description: 聊天内容重置请求
  * @date 2023/12/6 10:33
  */
-@Schema(name = "聊天内容重置请求")
+@Schema(description = "聊天内容重置请求")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class TalkRestRequest implements Serializable {
     /**
      * {@link com.example.talk.model.enums.AnswererEnums}
      */
-    @Schema(name = "模型")
+    @Schema(description = "模型")
     private String model;
 
     public void check() {
