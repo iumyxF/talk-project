@@ -10,7 +10,7 @@ import com.example.talk.model.dto.talk.TalkRestRequest;
 import com.example.talk.model.enums.AnswererEnums;
 import com.example.talk.service.TalkService;
 import com.example.talk.service.UserService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,13 +31,13 @@ public class TalkController {
     @Resource
     private UserService userService;
 
-    @ApiOperation(value = "LLM 模型列表")
+    @Operation(description = "LLM 模型列表")
     @GetMapping("/models")
     public BaseResponse<List<String>> models() {
         return ResultUtils.success(AnswererEnums.getAllNames());
     }
 
-    @ApiOperation(value = "问答")
+    @Operation(description = "问答")
     @AuthCheck(anyRole = {UserConstant.DEFAULT_ROLE, UserConstant.ADMIN_ROLE})
     @PostMapping("/answerer")
     public BaseResponse<String> answerer(@RequestBody TalkQuestionRequest talkQuestionRequest,
@@ -47,7 +47,7 @@ public class TalkController {
         return ResultUtils.success(reply);
     }
 
-    @ApiOperation(value = "重置对话")
+    @Operation(description = "重置对话")
     @AuthCheck(anyRole = {UserConstant.DEFAULT_ROLE, UserConstant.ADMIN_ROLE})
     @PostMapping("/reset")
     public BaseResponse<Boolean> reset(@RequestBody TalkRestRequest talkRestRequest,

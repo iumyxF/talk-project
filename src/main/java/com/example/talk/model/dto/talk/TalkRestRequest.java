@@ -2,8 +2,7 @@ package com.example.talk.model.dto.talk;
 
 import com.example.talk.common.ErrorCode;
 import com.example.talk.exception.BusinessException;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * @description: 聊天内容重置请求
  * @date 2023/12/6 10:33
  */
-@ApiModel("聊天内容重置请求")
+@Schema(name = "聊天内容重置请求")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class TalkRestRequest implements Serializable {
     /**
      * {@link com.example.talk.model.enums.AnswererEnums}
      */
-    @ApiModelProperty("模型")
+    @Schema(name = "模型")
     private String model;
 
     public void check() {

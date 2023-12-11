@@ -12,12 +12,17 @@ import java.util.stream.Collectors;
 public enum AnswererEnums {
 
     /**
-     * 通义千问
+     * 阿里 通义千问
      */
     TYQW("qwen"),
 
     /**
-     * 微软new bing
+     * 百度 千帆模型 Qianfan-Chinese-Llama-2-13B
+     */
+    QIAN_FAN("qianfan"),
+
+    /**
+     * 微软 new bing
      */
     NEW_BING("newbing");
 

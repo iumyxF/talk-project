@@ -5,7 +5,7 @@ import com.alibaba.dashscope.aigc.generation.GenerationOutput;
 import com.alibaba.dashscope.aigc.generation.GenerationResult;
 import com.example.talk.api.tyqw.TyqwApi;
 import com.example.talk.common.ErrorCode;
-import com.example.talk.config.TyqwConfig;
+import com.example.talk.config.properties.TyqwProperties;
 import com.example.talk.exception.BusinessException;
 import com.example.talk.model.domain.User;
 import com.example.talk.model.enums.AnswererEnums;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeoutException;
 public class TyqwAnswerer implements Answerer {
 
     @Resource
-    private TyqwConfig config;
+    private TyqwProperties config;
 
     @Resource
     private TyqwApi api;

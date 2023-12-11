@@ -91,3 +91,7 @@ llm:
 #  阿里 通义千问apiKey
   tyqw:
     apiKey: your api key
+  qian-fan:
+    appId: your appid
+    apiKey: your api key
+    secretKey: your secret key
