@@ -33,7 +33,7 @@ public class QianFanAnswerer implements Answerer {
 
     @Override
     public boolean resetTalk(User user) {
-        return false;
+        return api.clearMessage(user.getId());
     }
 
     @Override

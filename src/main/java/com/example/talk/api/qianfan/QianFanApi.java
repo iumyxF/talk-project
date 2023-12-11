@@ -127,4 +127,14 @@ public class QianFanApi {
             throw new BusinessException(ErrorCode.REMOTE_CALL_ERROR, response.getErrorMsg());
         }
     }
+
+    /**
+     * 清空用户聊天上下文记录
+     *
+     * @param userId 用户id
+     * @return 结果
+     */
+    public boolean clearMessage(Long userId) {
+        return MSG_CONTEXT_MAP.remove(userId) != null;
+    }
 }
