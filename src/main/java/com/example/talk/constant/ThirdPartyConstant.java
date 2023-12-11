@@ -1,7 +1,7 @@
 package com.example.talk.constant;
 
 /**
- * @author fzy
+ * @author iumyxF
  * @description: 第三方接口常量
  * @date 2023/12/7 15:41
  */

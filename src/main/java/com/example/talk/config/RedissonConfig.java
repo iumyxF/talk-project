@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 
 /**
- * @author fzy
+ * @author iumyxF
  * @description: redisson 配置
  * @date 2023/12/11 10:08
  */
